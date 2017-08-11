@@ -1,0 +1,34 @@
+#
+version: '3.2'
+services:
+  interlok_manager:
+    build:
+      context: .
+      dockerfile: Dockerfile.base
+    image: mcwarman/interlok-failover:snapshot
+    hostname: interlok_manager.local
+    environment:
+      JVM_ARGS: -Xmx512m
+    ports:
+      - 8080:8080
+  interlok:
+    build:
+      context: .
+      dockerfile: Dockerfile.multicast
+    image: mcwarman/interlok-failover-multicast:snapshot
+    environment:
+      JVM_ARGS: -Xmx512m
+      EXCLUDE_PORTS: 5555
+      EXTRA_SETTINGS: option httpchk GET /hello-world
+    links:
+      - interlok_manager
+
+  lb:
+    image: dockercloud/haproxy
+    links:
+      - interlok
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 80:80
+

@@ -1,0 +1,7 @@
+FROM mcwarman/interlok-failover:snapshot
+
+ADD config/multicast /opt/interlok/config
+ADD docker-entrypoint.sh /
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
+

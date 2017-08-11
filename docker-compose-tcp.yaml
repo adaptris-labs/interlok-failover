@@ -1,0 +1,55 @@
+#
+version: '3.2'
+services:
+  interlok_manager:
+    build:
+      context: .
+      dockerfile: Dockerfile.base
+    image: mcwarman/interlok-failover:snapshot
+    hostname: interlok_manager.local
+    environment:
+      JVM_ARGS: -Xmx512m
+    ports:
+      - 8080:8080
+  interlok1: &defaultinstance
+    build:
+      context: .
+      dockerfile: Dockerfile.tcp
+    image: mcwarman/interlok-failover-tcp:snapshot
+    hostname: interlok1.local
+    environment:
+      JVM_ARGS: -Xmx512m -Dfailover.tcp.port=4444 -Dfailover.tcp.peers=interlok2:4445;interlok3:4446
+      EXCLUDE_PORTS: 5555
+      EXTRA_SETTINGS: option httpchk GET /hello-world
+    links:
+      - interlok_manager
+  interlok2:
+    <<: *defaultinstance
+    hostname: interlok2.local
+    environment:
+      JVM_ARGS: -Xmx512m -Dfailover.tcp.port=4445 -Dfailover.tcp.peers=interlok1:4444;interlok3:4446
+      EXCLUDE_PORTS: 5555
+    links:
+      - interlok_manager
+      - interlok1
+  interlok3:
+    <<: *defaultinstance
+    hostname: interlok3.local
+    environment:
+      JVM_ARGS: -Xmx512m -Dfailover.tcp.port=4446 -Dfailover.tcp.peers=interlok1:4444;interlok2:4445
+      EXCLUDE_PORTS: 5555
+    links:
+      - interlok_manager
+      - interlok1
+      - interlok2
+
+  lb:
+    image: dockercloud/haproxy
+    links:
+      - interlok1
+      - interlok2
+      - interlok3
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 80:80
