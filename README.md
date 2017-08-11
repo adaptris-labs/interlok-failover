@@ -34,7 +34,7 @@ The following helper scripts have been provided to add worker instances to the m
 ```
 $ ls scripts/
 add_instances_to_manager_multicast.sh  add_instances_to_manager_tcp.sh
-$ ./add_instances_to_manager_multicast.sh
+$ ./scripts/add_instances_to_manager_multicast.sh
 Adding da2113eb2fd3
 {"jmxUid":"da2113eb2fd3","url":"service:jmx:jmxmp://da2113eb2fd3:5555","name":"da2113eb2fd3"}
 Adding 789804fca509
