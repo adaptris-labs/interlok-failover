@@ -23,7 +23,8 @@ $ docker-compose -f docker-compose-tcp.yaml up
 ## Testing
 
 ```
-$ curl http://localhost/hello-world
+$ curl -s "http://localhost/hello-world"
+Hello World!
 ```
 
 ## Notes
