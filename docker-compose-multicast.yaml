@@ -18,7 +18,7 @@ services:
     image: mcwarman/interlok-failover-multicast:snapshot
     environment:
       JVM_ARGS: -Xmx512m
-      EXCLUDE_PORTS: 5555
+      EXCLUDE_PORTS: 5555,8080
       EXTRA_SETTINGS: option httpchk GET /hello-world
     links:
       - interlok_manager

@@ -1,7 +1,10 @@
 FROM mcwarman/interlok-failover:snapshot
 
+ADD config/shared /opt/interlok/config
 ADD config/multicast /opt/interlok/config
 ADD docker-entrypoint.sh /
+
+EXPOSE 8081
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
