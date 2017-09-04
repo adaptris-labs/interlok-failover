@@ -19,7 +19,7 @@ services:
     hostname: interlok1.local
     environment:
       JVM_ARGS: -Xmx512m -Dfailover.tcp.port=4444 -Dfailover.tcp.peers=interlok2:4445;interlok3:4446
-      EXCLUDE_PORTS: 5555
+      EXCLUDE_PORTS: 5555,8080
       EXTRA_SETTINGS: option httpchk GET /hello-world
     links:
       - interlok_manager
@@ -28,7 +28,7 @@ services:
     hostname: interlok2.local
     environment:
       JVM_ARGS: -Xmx512m -Dfailover.tcp.port=4445 -Dfailover.tcp.peers=interlok1:4444;interlok3:4446
-      EXCLUDE_PORTS: 5555
+      EXCLUDE_PORTS: 5555,8080
     links:
       - interlok_manager
       - interlok1
@@ -37,7 +37,7 @@ services:
     hostname: interlok3.local
     environment:
       JVM_ARGS: -Xmx512m -Dfailover.tcp.port=4446 -Dfailover.tcp.peers=interlok1:4444;interlok2:4445
-      EXCLUDE_PORTS: 5555
+      EXCLUDE_PORTS: 5555,8080
     links:
       - interlok_manager
       - interlok1
