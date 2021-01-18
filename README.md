@@ -2,7 +2,7 @@
 
 Sample docker project that demostrates the Interlok failover capability.
 
-See [Interlok failover](http://interlok.adaptris.net/interlok-docs/advanced-failover.html) documentation for more detail.
+See [Interlok failover](https://interlok.adaptris.net/interlok-docs/#/pages/advanced/advanced-failover) documentation for more detail.
 
 Configurations include a load balancer which will direct traffic to the running instance.
 
